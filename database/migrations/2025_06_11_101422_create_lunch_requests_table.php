@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lunch_requests', function (Blueprint $table) {
-            $table->id();  // Unique identifier
-            $table->string('name');  // User's name
-            $table->unsignedBigInteger('user_id');  // Telegram user ID
-            $table->boolean('is_supervisor')->default(false);  // Role management via Spatie
-            $table->enum('status', ['at_lunch', 'work', 'dayoff'])->default('work');  // User's current status
-            $table->timestamp('lunch_time')->nullable();  // Scheduled lunch start time
+            $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('user_id')->unique(); // Make user_id unique
+            $table->boolean('is_supervisor')->default(false);
+            $table->enum('status', ['available', 'requested', 'at_lunch'])->default('available'); // Updated statuses
+            $table->timestamp('lunch_time')->nullable();
             $table->timestamps();
+            $table->index(['user_id', 'status']);
         });
-
     }
 
     /**

@@ -65,8 +65,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
-
+    'timezone' => 'Asia/Tashkent',
+    'schedule_timezone' => 'Asia/Tashkent',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

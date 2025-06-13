@@ -10,14 +10,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY . .
 
-RUN curl -sSL https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz \
-    -o ngrok.tgz && \
-    tar -xzf ngrok.tgz && \
-    mv ngrok /usr/local/bin/ && \
-    rm ngrok.tgz
-
 RUN chown -R www-data:www-data /var/www
 
-EXPOSE 9000 4040
+EXPOSE 9000
 
-CMD ["sh", "-c", "ngrok http 9000 & php-fpm"]
+CMD ["php-fpm"]

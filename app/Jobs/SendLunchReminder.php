@@ -2,26 +2,40 @@
 
 namespace App\Jobs;
 
-use SergiX44\Nutgram\Nutgram;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use SergiX44\Nutgram\Nutgram;
 
 class SendLunchReminder implements ShouldQueue
 {
-    use Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $userId;
     protected $message;
 
+    /**
+     * Create a new job instance.
+     */
     public function __construct($userId, $message)
     {
         $this->userId = $userId;
         $this->message = $message;
     }
 
-    public function handle()
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
     {
-        $bot = new Nutgram(env('TELEGRAM_BOT_TOKEN'));
-        $bot->sendMessage($this->userId, $this->message);
+        try {
+            $bot = app(Nutgram::class);
+            $bot->sendMessage($this->userId, $this->message);
+        } catch (\Exception $e) {
+            // Log the error but don't fail the job
+            \Log::error("Failed to send lunch reminder to user {$this->userId}: " . $e->getMessage());
+        }
     }
 }
