@@ -2,6 +2,7 @@
 /** @var SergiX44\Nutgram\Nutgram $bot */
 
 use App\Http\Controllers\LunchController;
+use Illuminate\Support\Facades\Route;
 use SergiX44\Nutgram\Nutgram;
 use App\Models\LunchRequest;
 use App\Models\SupervisorList;
@@ -16,18 +17,22 @@ use App\Jobs\SendLunchReminder;
 | handlers are loaded by the NutgramServiceProvider. Enjoy!
 |
 */
+Route::post('/', function (){
+    $bot=new Nutgram(env('TELEGRAM_TOKEN'));
+    $bot->sendMessage("Welcome! I'll manage lunch breaks efficiently.", 1971976188);
+    $bot->onCommand('start', function (Nutgram $bot) {
+        $bot->sendMessage("Welcome! I'll manage lunch breaks efficiently.");
+    })->description('The start command!');
 
-$bot->onCommand('start', function (Nutgram $bot) {
-    $bot->sendMessage("Welcome! I'll manage lunch breaks efficiently.");
-})->description('The start command!');
+    $bot->onCommand('announce_lunch', [LunchController::class, 'announceLunch']);
+    $bot->onCallbackQuery('lunch_request', [LunchController::class, 'handleLunchRequest']);
+    $bot->onCommand('process_lunch_list', [LunchController::class, 'processLunchList']);
+    $bot->onCommand('schedule_lunch_reminders', [LunchController::class, 'scheduleReminders']);
+    $bot->onCommand('approve_lunch', [LunchController::class, 'approveLunch']);
+    $bot->onCommand('lunch_status', [LunchController::class, 'lunchStatus']);
+    $bot->onCommand('reset_lunch', [LunchController::class, 'resetLunch']);
 
-$bot->onCommand('announce_lunch', [LunchController::class, 'announceLunch']);
-$bot->onCallbackQuery('lunch_request', [LunchController::class, 'handleLunchRequest']);
-$bot->onCommand('process_lunch_list', [LunchController::class, 'processLunchList']);
-$bot->onCommand('schedule_lunch_reminders', [LunchController::class, 'scheduleReminders']);
-$bot->onCommand('approve_lunch', [LunchController::class, 'approveLunch']);
-$bot->onCommand('lunch_status', [LunchController::class, 'lunchStatus']);
-$bot->onCommand('reset_lunch', [LunchController::class, 'resetLunch']);
+});
 
 //$bot->onCommand('announce_lunch', function (Nutgram $bot) {
 //    $chatId = env('TELEGRAM_GROUP_ID');
