@@ -8,6 +8,7 @@ use App\Console\Commands\LunchReset;
 use App\Console\Commands\ScheduleLunchReminder;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,11 +26,28 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->booted(function () {
-            $schedule = app(Schedule::class);
-            $schedule->command(AnnounceLunch::class)->dailyAt('12:45');
-            $schedule->command(ApproveLunch::class)->dailyAt('12:55');
-            $schedule->command(LunchReset::class)->dailyAt('08:00');
-            $schedule->command(ScheduleLunchReminder::class)->dailyAt('13:00');
+            if(Schema::hasTable('lunch_schedules')) {
+                $schedule = app(Schedule::class);
+                $settings = \App\Models\LunchSchedule::first();
+
+                if ($settings && $settings->enabled) {
+                    if ($settings->announce_time) {
+                        $schedule->command(AnnounceLunch::class)->dailyAt($settings->announce_time);
+                    }
+
+                    if ($settings->reminder_time) {
+                        $schedule->command(ScheduleLunchReminder::class)->dailyAt($settings->reminder_time);
+                    }
+
+                    if ($settings->reset_time) {
+                        $schedule->command(LunchReset::class)->dailyAt($settings->reset_time);
+                    }
+
+                    if ($settings->approval_time) {
+                        $schedule->command(ApproveLunch::class)->dailyAt($settings->approval_time);
+                    }
+                }
+            }
         });
     }
 }
