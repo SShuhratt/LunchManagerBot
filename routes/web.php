@@ -12,6 +12,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 });
+Route::prefix('telegram')->group(base_path('routes/telegram.php'));
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

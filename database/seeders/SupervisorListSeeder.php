@@ -14,9 +14,8 @@ class SupervisorListSeeder extends Seeder
     public function run(): void
     {
         SupervisorList::create([
-            'user_id' => 123456789, // Replace with actual Telegram user IDs
-            'name' => 'John Supervisor',
-            'department' => 'Management'
+            'user_id' => 1971976188,
+            'name' => 'Shuhrat',
         ]);
     }
 }

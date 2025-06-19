@@ -44,9 +44,4 @@ class ApproveLunch extends Command
 
         info("Lunch approved for {$approvedUsers->count()} users.");
     }
-
-    public function schedule(Schedule $schedule): void
-    {
-        $schedule->dailyAt('12:55');
-    }
 }

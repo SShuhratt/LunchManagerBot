@@ -2,13 +2,16 @@
 
 namespace App\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
+use SergiX44\Nutgram\Nutgram;
+
 use App\Console\Commands\AnnounceLunch;
 use App\Console\Commands\ApproveLunch;
 use App\Console\Commands\LunchReset;
 use App\Console\Commands\ScheduleLunchReminder;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
+use App\Http\Controllers\LunchController;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,8 +28,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Scheduling commands dynamically from lunch_schedules table
         $this->app->booted(function () {
-            if(Schema::hasTable('lunch_schedules')) {
+            if (Schema::hasTable('lunch_schedules')) {
                 $schedule = app(Schedule::class);
                 $settings = \App\Models\LunchSchedule::first();
 
@@ -49,5 +53,18 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
         });
+
+//        $this->app->resolving(Nutgram::class, function (Nutgram $bot) {
+//            \Log::info('[Nutgram] Registering handlers...');
+//
+//            $bot->onCommand('start', [LunchController::class, 'handleStart']);
+//            $bot->onCommand('announce_lunch', [LunchController::class, 'announceLunch']);
+//            $bot->onCallbackQuery('lunch_request', [LunchController::class, 'handleLunchRequest']);
+//            $bot->onCommand('process_lunch_list', [LunchController::class, 'processLunchList']);
+//            $bot->onCommand('schedule_lunch_reminders', [LunchController::class, 'scheduleReminders']);
+//            $bot->onCommand('approve_lunch', [LunchController::class, 'approveLunch']);
+//            $bot->onCommand('lunch_status', [LunchController::class, 'lunchStatus']);
+//            $bot->onCommand('reset_lunch', [LunchController::class, 'resetLunch']);
+//        });
     }
 }

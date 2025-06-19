@@ -12,7 +12,6 @@ class SupervisorList extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'department',
         'is_active'
     ];
 

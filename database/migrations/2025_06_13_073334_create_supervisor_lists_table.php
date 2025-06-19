@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->unique(); // Telegram user ID
             $table->string('name'); // User's name
-            $table->string('department')->nullable(); // Optional department
             $table->boolean('is_active')->default(true); // Can disable users
             $table->timestamps();
 

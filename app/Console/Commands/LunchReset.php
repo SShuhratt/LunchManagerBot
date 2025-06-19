@@ -17,10 +17,4 @@ class LunchReset extends Command
         LunchRequest::query()->update(['status' => 'available']);
         info('All lunch statuses have been reset.');
     }
-
-    public function schedule(Schedule $schedule): void
-    {
-        // Every day at 08:00 AM
-        $schedule->dailyAt('08:00');
-    }
 }

@@ -34,9 +34,4 @@ class ScheduleLunchReminder extends Command
 
         info("Reminders scheduled for {$usersAtLunch->count()} users.");
     }
-
-    public function schedule(Schedule $schedule): void
-    {
-        $schedule->dailyAt('13:00');
-    }
 }

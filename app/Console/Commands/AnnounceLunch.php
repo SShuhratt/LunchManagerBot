@@ -20,10 +20,5 @@ class AnnounceLunch extends Command
 
         info('Lunch announcement sent.');
     }
-
-    public function schedule(Schedule $schedule): void
-    {
-        $schedule->dailyAt('12:40');
-    }
 }
 
