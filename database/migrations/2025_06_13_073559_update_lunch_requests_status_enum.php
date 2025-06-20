@@ -17,7 +17,6 @@ return new class extends Migration
 
         Schema::table('lunch_requests', function (Blueprint $table) {
             $table->enum('status', ['available', 'requested', 'at_lunch'])->default('available');
-            $table->unique('user_id'); // Ensure one record per user
         });
     }
 

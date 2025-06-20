@@ -13,12 +13,4 @@ class LunchSchedule extends Model
         'reset_time',
         'enabled',
     ];
-
-    protected $casts = [
-        'enabled' => 'boolean',
-        'announce_time' => 'datetime:H:i',
-        'approval_time' => 'datetime:H:i',
-        'reminder_time' => 'datetime:H:i',
-        'reset_time' => 'datetime:H:i',
-    ];
 }

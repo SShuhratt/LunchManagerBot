@@ -107,11 +107,11 @@ class LunchController extends Controller
                     'lunch_time' => $lunchStartTime
                 ]);
 
-                $bot->sendMessage("⏳ 3 minutes left until lunch starts!", chat_id: $userId);
+                $bot->sendMessage("⏳ 5 minutes left until lunch starts!", chat_id: $userId);
 
                 dispatch(function () use ($bot, $userId) {
                     $bot->sendMessage("🍴 It's time to have lunch!", chat_id: $userId);
-                })->delay(now()->addMinutes(3));
+                })->delay(now()->addMinutes(5));
             }
 
             $bot->sendMessage("✅ Lunch process initiated for " . $finalLunchList->count() . " users.");
@@ -164,21 +164,20 @@ class LunchController extends Controller
 
             foreach ($approvedUsers as $lunchRequest) {
                 $userId = $lunchRequest->user_id;
-                $lunchStartTime = now()->addMinutes(3);
+                $lunchStartTime = now()->addMinutes(5);
 
                 $lunchRequest->update([
                     'status' => 'at_lunch',
                     'lunch_time' => $lunchStartTime
                 ]);
 
-                $bot->sendMessage("✅ Your lunch has been approved!\n⏳ 3 minutes left until lunch starts!", chat_id: $userId);
+                $bot->sendMessage("✅ Your lunch has been approved!\n⏳ 5 minutes left until lunch starts!", chat_id: $userId);
 
                 dispatch(function () use ($bot, $userId) {
                     $bot->sendMessage("🍴 It's time to have lunch!", chat_id: $userId);
-                })->delay(now()->addMinutes(3));
+                })->delay(now()->addMinutes(5));
             }
 
-            // 🔄 Invalidate related caches
             Cache::forget('lunch_requests_all');
             Cache::forget('lunch_status_count');
 

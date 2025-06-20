@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('lunch_schedules', function (Blueprint $table) {
             $table->id();
-            $table->time('announce_time')->default('12:55');
-            $table->time('approval_time')->nullable();
-            $table->time('reset_time')->nullable();
+            $table->time('announce_time')->default('12:45');
+            $table->time('approval_time')->default('12:55');
+            $table->time('reminder_time')->default('13:00');
+            $table->time('reset_time')->default('08:00');
             $table->boolean('enabled')->default(true);
             $table->timestamps();
         });
